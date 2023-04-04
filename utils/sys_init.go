@@ -4,7 +4,11 @@ import (
 	"fmt"
 
 	"github.com/spf13/viper"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
+
+var DB *gorm.DB
 
 func InitConfig() {
 	viper.SetConfigName("app")
@@ -18,4 +22,9 @@ func InitConfig() {
 
 }
 
-func InitMySQL() {}
+func InitMySQL() {
+	DB, _ = gorm.Open(mysql.Open(viper.GetString("mysql.dns")), &gorm.Config{})
+	// if err != nil {
+	// 	panic("failed to connect database")
+	// }
+}
