@@ -2,9 +2,12 @@ package main
 
 import (
 	"prj_01/router"
+	"prj_01/utils"
 )
 
 func main() {
+	utils.InitConfig()
+	utils.InitMySQL()
 	// 创建一个默认的路由引擎
 	r := router.Router()
 

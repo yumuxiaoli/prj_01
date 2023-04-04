@@ -1,6 +1,8 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+)
 
 type UserBasic struct {
 	gorm.Model
@@ -13,7 +15,7 @@ type UserBasic struct {
 	ClientPort    string // 客户端口
 	LoginTime     uint64 // 登陆时间
 	HeartbeatTime uint64 // 心跳
-	LogoutTime    uint64 // 下线时间
+	LoginOutTime  uint64 `gorm:"column:login_out_time"` // 下线时间
 	IsLogout      bool   //	是否下线
 	DeviceInfo    string //设备信息
 }
