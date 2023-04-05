@@ -20,7 +20,9 @@ import (
 func GetUserList(ctx *gin.Context) {
 	data := models.GetUserList()
 	ctx.JSON(http.StatusOK, gin.H{
-		"message": data,
+		"code":    0,
+		"message": "查询成功",
+		"data":    data,
 	})
 }
 
@@ -42,7 +44,9 @@ func CreatUser(ctx *gin.Context) {
 	data := models.FindUserByName(user.Name)
 	if data.Name != "" {
 		ctx.JSON(http.StatusOK, gin.H{
-			"message": "用户名已被注册",
+			"code":    -1,
+			"message": "用户已存在",
+			"data":    data,
 		})
 		return
 	}
@@ -50,7 +54,9 @@ func CreatUser(ctx *gin.Context) {
 
 	if password != repassword {
 		ctx.JSON(http.StatusOK, gin.H{
+			"code":    -1,
 			"message": "两次密码不一致",
+			"data":    data,
 		})
 		return
 	}
@@ -58,7 +64,9 @@ func CreatUser(ctx *gin.Context) {
 	user.Salt = salt
 	models.CreateUser(user)
 	ctx.JSON(http.StatusOK, gin.H{
-		"message": "登陆成功",
+		"code":    0,
+		"message": "登录成功",
+		"data":    user,
 	})
 }
 
@@ -74,7 +82,9 @@ func DeleteUser(ctx *gin.Context) {
 	user.ID = uint(id)
 	models.DeleteUser(user)
 	ctx.JSON(http.StatusOK, gin.H{
+		"code":    0,
 		"message": "删除成功",
+		"data":    user,
 	})
 }
 
@@ -101,43 +111,55 @@ func UpdateUser(ctx *gin.Context) {
 	if err != nil {
 		fmt.Println(err)
 		ctx.JSON(http.StatusOK, gin.H{
+			"code":    -1,
 			"message": "修改参数不匹配",
+			"data":    user,
 		})
 	} else {
 		models.UpdateUser(user)
 		ctx.JSON(http.StatusOK, gin.H{
+			"code":    0,
 			"message": "修改成功",
+			"data":    user,
 		})
 	}
 }
 
 // SelectUser
-// @Summary 查询用户
+// @Summary 用户登录
 // @Tags 首页
 // @param name query string false "username"
 // @param password query string false "password"
 // @Success 200 {string} json {"code","message"}
 // @Router /user/findandwd [post]
 func FindUserByNameAndPwd(ctx *gin.Context) {
+	data := models.UserBasic{}
 	name := ctx.Query("name")
 	password := ctx.Query("password")
 	user_name := models.FindUserByName(name)
 	if user_name.Name == "" {
 		ctx.JSON(http.StatusOK, gin.H{
+			"code":    -1,
 			"message": "该用户不存在",
+			"data":    data,
 		})
 		return
 	}
 	flag := utils.ValidPassword(password, user_name.Salt, user_name.Password)
 	if !flag {
 		ctx.JSON(http.StatusOK, gin.H{
-			"message": "密码不正确",
+			"code":    -1,
+			"message": "登录失败",
+			"data":    data,
 		})
 		return
 	}
 	user_pwd := utils.MakePassword(password, user_name.Salt)
-	data := models.FindUserByNameAndPwd(name, user_pwd)
+	data = models.FindUserByNameAndPwd(name, user_pwd)
+
 	ctx.JSON(http.StatusOK, gin.H{
-		"message": data,
+		"code":    0,
+		"message": "登录成功",
+		"data":    data,
 	})
 }

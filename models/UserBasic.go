@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"prj_01/utils"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -47,6 +48,11 @@ func FindUserEmail(email string) *gorm.DB {
 func FindUserByNameAndPwd(name string, password string) UserBasic {
 	user := UserBasic{}
 	utils.DB.Where("name = ? and password =?", name, password).First(&user)
+
+	// token加密
+	str := fmt.Sprintf("%d", time.Now().Unix())
+	temp := utils.MD5Encode(str)
+	utils.DB.Model(&user).Where("id = ?", user.ID).Update("Identity", temp)
 	return user
 
 }
