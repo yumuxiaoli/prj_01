@@ -7,13 +7,11 @@ import (
 )
 
 // GetIndex
-// @Tags s首页
-// @Success 200 {string} welcome
+// @Tags 首页
+// @Success 200 {string} Welcome
 // @Router /index [get]
-
 func GetIndex(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "welcome",
 	})
-
 }
