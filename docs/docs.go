@@ -36,7 +36,7 @@ const docTemplate_swagger = `{
                 "tags": [
                     "首页"
                 ],
-                "summary": "显示",
+                "summary": "显示用户",
                 "responses": {
                     "200": {
                         "description": "code\",\"message\"}",
@@ -130,6 +130,18 @@ const docTemplate_swagger = `{
                         "type": "string",
                         "description": "password",
                         "name": "password",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "phone",
+                        "name": "phone",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "email",
+                        "name": "email",
                         "in": "formData"
                     }
                 ],

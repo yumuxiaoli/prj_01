@@ -17,7 +17,7 @@ paths:
           description: code","message"}
           schema:
             type: string
-      summary: 显示
+      summary: 显示用户
       tags:
       - 首页
   /user/creatuser:
@@ -72,6 +72,14 @@ paths:
       - description: password
         in: formData
         name: password
+        type: string
+      - description: phone
+        in: formData
+        name: phone
+        type: string
+      - description: email
+        in: formData
+        name: email
         type: string
       responses:
         "200":
