@@ -28,6 +28,7 @@ func Router() *gin.Engine {
 		user.GET("/creatuser", service.CreatUser)
 		user.GET("/deleteuser", service.DeleteUser)
 		user.POST("/updateuser", service.UpdateUser)
+		user.POST("/findandwd", service.FindUserByNameAndPwd)
 	}
 	return r
 }

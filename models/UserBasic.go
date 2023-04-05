@@ -44,6 +44,12 @@ func FindUserEmail(email string) *gorm.DB {
 	return utils.DB.Where("email = ?", email).First(&user)
 }
 
+func FindUserByNameAndPwd(name string, password string) UserBasic {
+	user := UserBasic{}
+	utils.DB.Where("name = ? and password =?", name, password).First(&user)
+	return user
+
+}
 func GetUserList() []*UserBasic {
 	data := make([]*UserBasic, 10)
 	utils.DB.Find(&data)

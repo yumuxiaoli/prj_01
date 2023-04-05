@@ -58,6 +58,25 @@ paths:
       summary: 删除用户
       tags:
       - 首页
+  /user/findandwd:
+    post:
+      parameters:
+      - description: username
+        in: query
+        name: name
+        type: string
+      - description: password
+        in: query
+        name: password
+        type: string
+      responses:
+        "200":
+          description: code","message"}
+          schema:
+            type: string
+      summary: 查询用户
+      tags:
+      - 首页
   /user/updateuser:
     post:
       parameters:

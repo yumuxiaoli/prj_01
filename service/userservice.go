@@ -18,8 +18,7 @@ import (
 // @Success 200 {string} json {"code","message"}
 // @Router /user [get]
 func GetUserList(ctx *gin.Context) {
-	data := make([]*models.UserBasic, 1)
-	data = models.GetUserList()
+	data := models.GetUserList()
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": data,
 	})
@@ -56,6 +55,7 @@ func CreatUser(ctx *gin.Context) {
 		return
 	}
 	user.Password = utils.MakePassword(password, salt)
+	user.Salt = salt
 	models.CreateUser(user)
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "登陆成功",
@@ -109,4 +109,35 @@ func UpdateUser(ctx *gin.Context) {
 			"message": "修改成功",
 		})
 	}
+}
+
+// SelectUser
+// @Summary 查询用户
+// @Tags 首页
+// @param name query string false "username"
+// @param password query string false "password"
+// @Success 200 {string} json {"code","message"}
+// @Router /user/findandwd [post]
+func FindUserByNameAndPwd(ctx *gin.Context) {
+	name := ctx.Query("name")
+	password := ctx.Query("password")
+	user_name := models.FindUserByName(name)
+	if user_name.Name == "" {
+		ctx.JSON(http.StatusOK, gin.H{
+			"message": "该用户不存在",
+		})
+		return
+	}
+	flag := utils.ValidPassword(password, user_name.Salt, user_name.Password)
+	if !flag {
+		ctx.JSON(http.StatusOK, gin.H{
+			"message": "密码不正确",
+		})
+		return
+	}
+	user_pwd := utils.MakePassword(password, user_name.Salt)
+	data := models.FindUserByNameAndPwd(name, user_pwd)
+	ctx.JSON(http.StatusOK, gin.H{
+		"message": data,
+	})
 }
