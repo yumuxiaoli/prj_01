@@ -1,14 +1,20 @@
 package main
 
-// import (
-// 	"fmt"
-// 	"prj_01/models"
-// )
+import (
+	"prj_01/models"
 
-// func main() {
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+)
 
-// 	// 迁移 schema
-// 	db.AutoMigrate(&models.UserBasic{})
+func main() {
+	db, err := gorm.Open(mysql.Open("root:123456@tcp(127.0.0.1:3306)/go_im?charset=utf8mb4&parseTime=True&loc=Local"))
+	// 	// 迁移 schema
+	if err != nil {
+		panic("failed to connect database")
+	}
+	db.AutoMigrate(&models.UserBasic{})
+}
 
 // 	// Create
 // 	user := &models.UserBasic{

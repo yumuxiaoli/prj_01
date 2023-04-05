@@ -16,6 +16,7 @@ type UserBasic struct {
 	Identity      string // 唯一标识
 	ClientIP      string
 	ClientPort    string // 客户端口
+	Salt          string // 注册随机数
 	LoginTime     uint64 // 登陆时间
 	HeartbeatTime uint64 // 心跳
 	LoginOutTime  uint64 `gorm:"column:login_out_time"` // 下线时间

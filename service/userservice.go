@@ -2,8 +2,10 @@ package service
 
 import (
 	"fmt"
+	"math/rand"
 	"net/http"
 	"prj_01/models"
+	"prj_01/utils"
 	"strconv"
 
 	"github.com/asaskevich/govalidator"
@@ -36,7 +38,7 @@ func CreatUser(ctx *gin.Context) {
 	user.Name = ctx.Query("name")
 	password := ctx.Query("password")
 	repassword := ctx.Query("repassword")
-
+	salt := fmt.Sprintf("%06d", rand.Int31())
 	// 用户名，电话号码和邮箱唯一
 	data := models.FindUserByName(user.Name)
 	if data.Name != "" {
@@ -53,7 +55,7 @@ func CreatUser(ctx *gin.Context) {
 		})
 		return
 	}
-	user.Password = password
+	user.Password = utils.MakePassword(password, salt)
 	models.CreateUser(user)
 	ctx.JSON(http.StatusOK, gin.H{
 		"message": "登陆成功",
