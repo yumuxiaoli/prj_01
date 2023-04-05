@@ -36,8 +36,19 @@ func CreatUser(ctx *gin.Context) {
 	user.Name = ctx.Query("name")
 	password := ctx.Query("password")
 	repassword := ctx.Query("repassword")
+
+	// 用户名，电话号码和邮箱唯一
+	data := models.FindUserByName(user.Name)
+	if data.Name != "" {
+		ctx.JSON(http.StatusOK, gin.H{
+			"message": "用户名已被注册",
+		})
+		return
+	}
+	// 补充
+
 	if password != repassword {
-		ctx.JSON(-1, gin.H{
+		ctx.JSON(http.StatusOK, gin.H{
 			"message": "两次密码不一致",
 		})
 		return
