@@ -74,7 +74,7 @@ paths:
           description: code","message"}
           schema:
             type: string
-      summary: 查询用户
+      summary: 用户登录
       tags:
       - 首页
   /user/updateuser:

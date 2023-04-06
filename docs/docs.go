@@ -112,7 +112,7 @@ const docTemplate_swagger = `{
                 "tags": [
                     "首页"
                 ],
-                "summary": "查询用户",
+                "summary": "用户登录",
                 "parameters": [
                     {
                         "type": "string",
