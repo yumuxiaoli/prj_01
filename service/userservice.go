@@ -166,7 +166,7 @@ func FindUserByNameAndPwd(ctx *gin.Context) {
 	})
 }
 
-// 防止跨越站点的伪请求
+// 防止跨域站点的伪请求
 var upGrade = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
 		return true
@@ -184,6 +184,9 @@ func SendMsg(ctx *gin.Context) {
 		if err != nil {
 			fmt.Println(err)
 		}
+		if err := recover(); err != nil {
+			fmt.Printf("error: %v\n", err)
+		}
 	}(ws)
 	MsgHandler(ws, ctx)
 }
@@ -193,10 +196,12 @@ func MsgHandler(ws *websocket.Conn, ctx *gin.Context) {
 	if err != nil {
 		fmt.Println(err)
 	}
+	fmt.Println("发送消息:", msg)
 	tm := time.Now().Format("2006-01-02 15:04:05")
 	m := fmt.Sprintf("[ws][%s]:%s", tm, msg)
 	err = ws.WriteMessage(1, []byte(m))
 	if err != nil {
 		fmt.Println(err)
 	}
+
 }

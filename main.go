@@ -8,6 +8,7 @@ import (
 func main() {
 	utils.InitConfig()
 	utils.InitMySQL()
+	utils.InitRedis()
 	// 创建一个默认的路由引擎
 	r := router.Router()
 
