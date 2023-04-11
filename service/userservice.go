@@ -192,16 +192,21 @@ func SendMsg(ctx *gin.Context) {
 }
 
 func MsgHandler(ws *websocket.Conn, ctx *gin.Context) {
-	msg, err := utils.Subscribe(ctx, utils.PublishKey)
-	if err != nil {
-		fmt.Println(err)
+	for {
+		msg, err := utils.Subscribe(ctx, utils.PublishKey)
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println("发送消息:", msg)
+		tm := time.Now().Format("2006-01-02 15:04:05")
+		m := fmt.Sprintf("[ws][%s]:%s", tm, msg)
+		err = ws.WriteMessage(1, []byte(m))
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
-	fmt.Println("发送消息:", msg)
-	tm := time.Now().Format("2006-01-02 15:04:05")
-	m := fmt.Sprintf("[ws][%s]:%s", tm, msg)
-	err = ws.WriteMessage(1, []byte(m))
-	if err != nil {
-		fmt.Println(err)
-	}
+}
 
+func SendUserMsg(ctx *gin.Context) {
+	models.Chat(ctx.Writer, ctx.Request)
 }
